@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario</title>
+</head>
+<body>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+RUT: <input required pattern="[0-9]{7,8}-[0-9Kk]" title="Ingrese un RUT válido" type="text" name="rut"><br>
+Nombre: <input required pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$" title="Solo se permiten letras y espacios" type="text" name="nombre"><br>
+Apellido: <input required pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$" title="Solo se permiten letras y espacios" type="text" name="apellido"><br> 
+Dirección: <input required type="text" name="direccion"><br>
+Ciudad: <input required pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$" title="Solo se permiten letras y espacios" type="text" name="ciudad"><br>
+Teléfono: <input required pattern="[0-9]{9}" title="Ingrese un número de teléfono válido" type="tel" name="fono"><br> 
+Email: <input required type="email" name="email"><br> 
+Fecha de Nacimiento: <input required type="date" name="fecha_nac"><br> 
+Estado Civil: <select required name="estado_civil">
+    <option value="">Seleccione...</option>
+    <option value="Soltero">Soltero</option>
+    <option value="Casado">Casado</option>
+    <option value="Divorciado">Divorciado</option>
+    <option value="Viudo">Viudo</option>
+</select><br>
+Comentarios: <textarea name="comentarios"></textarea><br> 
+<button type="submit" onclick="Guardar_formulario(event)">Guardar Formulario</button>
+</form> 
+<button onclick="Limpiar_formulario()">Limpiar Formulario</button>
+<button onclick="Cerrar()">Cerrar</button>
+</body>
+<script>
+    const baseDeDatos = [];
+    function Limpiar_formulario() {
+        document.querySelector('form').reset();
+    }
+    Limpiar_formulario();
+
+    function Guardar_formulario(event) {
+        if (!document.querySelector('form').checkValidity()) {
+            alert("Por favor, complete todos los campos requeridos correctamente.");
+        }
+        else{
+            // Evitar que el formulario se envíe y la página se recargue
+            event.preventDefault(); 
+
+            const registro = {     
+                rut: document.querySelector('input[name="rut"]').value,
+                nombre: document.querySelector('input[name="nombre"]').value,
+                apellido: document.querySelector('input[name="apellido"]').value,
+                direccion: document.querySelector('input[name="direccion"]').value,
+                ciudad: document.querySelector('input[name="ciudad"]').value,
+                fono: document.querySelector('input[name="fono"]').value,
+                email: document.querySelector('input[name="email"]').value,
+                fecha_nac: document.querySelector('input[name="fecha_nac"]').value,
+                estado_civil: document.querySelector('select[name="estado_civil"]').value,
+                comentarios: document.querySelector('textarea[name="comentarios"]').value
+            };
+            baseDeDatos.push(registro);
+            console.log("Formulario guardado:", registro);
+            alert("Formulario guardado correctamente.");
+            Limpiar_formulario();
+        }
+    }
+    function Cerrar() {
+        window.close();
+    }   
+</script>
+</html>
+
