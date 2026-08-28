@@ -12,6 +12,11 @@ body {
     padding: 30px;
 }
 
+.contenedor-index {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 30px;
+}
 
 /* Título del formulario */
 .titulo-formulario {

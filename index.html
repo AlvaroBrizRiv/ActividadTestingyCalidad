@@ -1,15 +1,54 @@
 <!DOCTYPE html>
 <html>
-<head></head>
-<body>
-    <h1>Bienvenido</h1>
-    <button onclick="window.location.href='Formulario.html'">Ir al Formulario</button>
-    <button onclick="window.location.href='buscar.html'">Ir a Buscar</button>
-    <button onclick="cerrar">Cerrar</button>
-<script>
-    function cerrar(){
-        window.close();
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <div class="box has-background-grey-light">
+    <h1 class="title has-text-centered has-text-black">Bienvenido a la página principal</h1>
+    </div>
+    <!-- Framework CSS Bulma -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 
-    }
-</script>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <section class="section ">
+        <div class="container">
+            <div class="column is-centered">
+                <div class="box contenedor-index pb-6 is-flex is-flex-direction-column is-align-items-center">
+                    <p class="subtitle is-size-4">Seleccione una opción para continuar:</p>
+                    <div class="button botones-index is-flex-direction-column is-align-items-center">
+                        <button 
+                            class="button is-primary is-size-5" 
+                            type="button" 
+                            onclick="window.open('Formulario.html', '_blank')">
+                            Ir al Formulario de Registro
+                        </button>
+                        <button 
+                            class="button is-primary is-size-5 mt-5" 
+                            type="button" 
+                            onclick="window.open('buscar.html','_blank')">
+                            Ir a Buscar Registro
+                        </button>
+                        <button 
+                            class="button is-danger is-size-5 mt-5" 
+                            type="button" 
+                            onclick="Cerrar()">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        <script>
+            // Cerrar ventana
+        function Cerrar() {
+
+            window.close();
+        }
+    </script>
 </body>
