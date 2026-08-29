@@ -42,7 +42,7 @@
                                 class="input"
                                 required
                                 pattern="[0-9]{7,8}-[0-9Kk]"
-                                title="Ingrese un RUT válido"
+                                title="Ingrese un RUT válido (Sin punto y con guion, ej: 12345678-9)"
                                 type="text"
                                 name="rut"
                                 placeholder="Ej: 12345678-9">
@@ -233,9 +233,6 @@
 
     <script>
 
-        const baseDeDatos = [];
-
-
         // Limpiar formulario
         function Limpiar_formulario() {
 
@@ -254,38 +251,48 @@
             event.preventDefault();
 
             const form = document.querySelector('form');
-
             const emailValue =
                 document.querySelector('input[name="email"]').value;
+                const elementos = form.elements;
+            
+            for (let i = 0; i < elementos.length; i++) {
+                const input = elementos[i];
 
-
+                
+                if (input.tagName !== 'BUTTON' && !input.checkValidity()) {
+                    
+                    
+                    if (input.validity.valueMissing) {
+                        alert(`El campo "${input.name}" es obligatorio. Por favor, complételo.`);
+                    } 
+                    
+                    else {
+                       
+                        alert(`Error en ${input.name}: ${input.title || 'Formato inválido.'}`);
+                    }
+                    
+                    
+                    input.focus(); 
+                    
+                    
+                    return; 
+                }
+            }
             // Validar correo electrónico
             const regexEmail =
                 /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-
             if (!regexEmail.test(emailValue)) {
-
                 alert(
-                    "Error: El correo debe incluir un punto y un dominio válido (ejemplo: nombre@correo.cl)."
-                );
-
+                    "Error: El correo debe incluir un punto y un dominio válido (ejemplo: nombre@correo.cl).");
+                    document.querySelector('input[name="email"]').focus();
                 return;
-
             }
-
 
             // Validar los demás campos
             if (!form.checkValidity()) {
-
-                alert(
-                    "Por favor, complete todos los campos requeridos correctamente."
-                );
-
-                form.reportValidity();
-
+                alert(form.reportValidity());
                 return;
-
             }
 
 
@@ -323,15 +330,15 @@
                     document.querySelector('textarea[name="comentarios"]').value
 
             };
-
+            //obtener la lista actualizada o crear una en su defecto
+            const baseDeDatos = JSON.parse(localStorage.getItem('baseDeDatos')) || [];
 
             // Guardar registro
             baseDeDatos.push(registro);
-
+            // guardar en almacenamiento local
+            localStorage.setItem('baseDeDatos', JSON.stringify(baseDeDatos));
 
             console.log("Formulario guardado:", registro);
-
-
             alert("Formulario guardado correctamente.");
 
 

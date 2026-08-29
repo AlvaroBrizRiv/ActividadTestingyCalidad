@@ -1,2 +1,140 @@
-<button onclick="window.location.href='index.html'">Volver al inicio</button>
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Buscar Registro</title>
+
+    <!-- Framework CSS Bulma -->
+    <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="box contenedor-formulario">
+
+                <h1 class="title is-3 titulo-formulario">
+                    Buscar Usuarios por Apellido
+                </h1>
+
+                <!--Buscador-->
+                <div class="field">
+                    <label class="label">Ingrese Apellido</label>
+                    <div class="control">
+                        <input class="input" type="text" id="buscarApellido" placeholder="Ej: Pérez">
+                    </div>
+                </div>
+
+                <!--boton para buscar-->
+                <div class="buttons botones-formulario">
+                    <button class="button is-primary" type="button" onclick="buscarPorApellido()">
+                        Buscar
+                    </button>
+
+                    <button class="button is-danger" type="button" onclick="Cerrar()">
+                        Cerrar y volver al inicio
+                    </button>
+                </div>
+
+                <!--mostrar la info-->
+                <div id="contenedorResultados" class="mt-5" style="display: none;">
+                    <h2 class="subtitle is-5">Resultados obtenidos:</h2>
+                    
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Dirección</th>
+                                <th>Ciudad</th>
+                                <th>Teléfono</th>
+                                <th>Email (Correo)</th>
+                                <th>Comentarios</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaResultados">
+                            <!-- Los resultados se insertarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--en caso de no haber apellidos que coincidan-->
+                <div id="mensajeSinResultados" class="notification is-warning mt-5" style="display: none;">
+                    No se encontraron usuarios con ese apellido.
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        function buscarPorApellido() {
+            <!--obtener los datos desde localStorage guardados por el Formulario-->
+            const baseDeDatos = JSON.parse(localStorage.getItem('baseDeDatos')) || [];
+
+            const apellidoBusqueda = document.getElementById('buscarApellido').value.trim();
+            const contenedorResultados = document.getElementById('contenedorResultados');
+            const tablaResultados = document.getElementById('tablaResultados');
+            const mensajeSinResultados = document.getElementById('mensajeSinResultados');
+            const cajaPrincipal = document.querySelector('.contenedor-formulario');
+
+            <!--limpiar resultados anteriores-->
+            tablaResultados.innerHTML = "";
+            contenedorResultados.style.display = "none";
+            mensajeSinResultados.style.display = "none";
+            cajaPrincipal.classList.remove('contenedor-ampliado');
+
+            <!--validar que se haya ingresado algo-->
+            if (apellidoBusqueda === "") {
+                alert("Por favor, ingrese un apellido para buscar.");
+                return;
+            }
+
+            <!--filtrar los apellidos de la base de datis-->
+            const resultados = baseDeDatos.filter(usuario => 
+                usuario.apellido.toLowerCase() === apellidoBusqueda.toLowerCase()
+            );
+
+            <!--Mostrar los datos si coinciden-->
+            if (resultados.length > 0) {
+                resultados.forEach(usuario => {
+                    const fila = `
+                        <tr>
+                            <td>${usuario.nombre}</td>
+                            <td>${usuario.apellido}</td>
+                            <td>${usuario.direccion}</td>
+                            <td>${usuario.ciudad}</td>
+                            <td>${usuario.fono}</td>
+                            <td>${usuario.email}</td>
+                            <td>${usuario.comentarios}</td>
+                        </tr>
+                    `;
+                    tablaResultados.innerHTML += fila;
+                });
+                
+                contenedorResultados.style.display = "block";
+                cajaPrincipal.classList.add('contenedor-ampliado');
+            } else {
+                mensajeSinResultados.style.display = "block";
+            }
+        }
+
+        <!--Función para cerrar la ventana-->
+        function Cerrar() {
+            window.close();
+        }
+    </script>
+
+</body>
+
+</html>
