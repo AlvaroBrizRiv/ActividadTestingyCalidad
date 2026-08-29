@@ -330,19 +330,54 @@
                     document.querySelector('textarea[name="comentarios"]').value
 
             };
-            //obtener la lista actualizada o crear una en su defecto
-            const baseDeDatos = JSON.parse(localStorage.getItem('baseDeDatos')) || [];
+// Obtener la lista actual o crear una nueva
+const baseDeDatos = JSON.parse(localStorage.getItem('baseDeDatos')) || [];
 
-            // Guardar registro
-            baseDeDatos.push(registro);
-            // guardar en almacenamiento local
-            localStorage.setItem('baseDeDatos', JSON.stringify(baseDeDatos));
+// Buscar si ya existe un registro con el mismo RUT
+const indiceExistente = baseDeDatos.findIndex(
+    usuario => usuario.rut === registro.rut
+);
 
-            console.log("Formulario guardado:", registro);
-            alert("Formulario guardado correctamente.");
+if (indiceExistente !== -1) {
 
+    // El registro ya existe
+    const respuesta = confirm(
+        "El registro ya existe.\n\n¿Desea sobrescribir la información?"
+    );
 
-            Limpiar_formulario();
+    if (respuesta) {
+
+        // Reemplazar el registro existente
+        baseDeDatos[indiceExistente] = registro;
+
+        alert("Registro actualizado correctamente.");
+
+    } else {
+
+        alert("Operación cancelada.");
+        return;
+    }
+
+} else {
+
+    // Guardar nuevo registro
+    baseDeDatos.push(registro);
+
+    alert("Formulario guardado correctamente.");
+
+}
+
+// Guardar en LocalStorage
+localStorage.setItem(
+    'baseDeDatos',
+    JSON.stringify(baseDeDatos)
+);
+
+// Mostrar en consola (opcional)
+console.log("Formulario guardado:", registro);
+
+// Limpiar el formulario
+Limpiar_formulario();
 
         }
 
